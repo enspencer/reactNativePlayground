@@ -9,21 +9,33 @@ import {
   AppRegistry,
   Text,
   StyleSheet,
-  View
+  View,
+  TextInput
 } from 'react-native';
 
 class reactNativePlayground extends Component {
   constructor(props) {
     super(props);
-    this.state = {firstLoad: true};
+    this.state = {firstLoad: true, text: ''};
   }
 
   render() {
     let showWelcome = this.state.firstLoad ? 'Welcome!' : '';
     return (
-      <View style={styles.container}>
-        <Text style={styles.heading}>{showWelcome}</Text>
-        <Greeting name='Emma' />
+      <View style={{flex:1}}>
+        <View style={styles.container}>
+          <Text style={styles.heading}>{showWelcome}</Text>
+          <TextInput
+            style={styles.textbox}
+            placeholder="What is your name?"
+            autoCorrect={false}
+            onSubmitEditing={(event) => this.setState({text: event.nativeEvent.text})}
+          />
+        </View>
+        <View style={styles.container2}>
+          <Greeting name={this.state.text} />
+        </View>
+        <View style={styles.container} />
       </View>
     );
   }
@@ -34,7 +46,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#9db5d1',
+    backgroundColor: 'steelblue',
+  },
+  container2: {
+    flex: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'skyblue',
   },
   heading: {
     fontSize: 30,
@@ -45,11 +63,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
   },
+  textbox: {
+    height: 40,
+  }
 });
 
 class Greeting extends Component {
   render() {
-    return <Text style={styles.subheading}>Hello {this.props.name}!</Text>
+    let message = this.props.name ? "Hello " + this.props.name : '';
+    return <Text style={styles.subheading}>{message}</Text>
   }
 }
 
